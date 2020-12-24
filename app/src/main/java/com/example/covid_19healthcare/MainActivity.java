@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -76,6 +78,39 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
         return false;
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        Menu menuNav = navigationView.getMenu();
+        final MenuItem nav_profile = menuNav.findItem(R.id.nav_profile);
+        final MenuItem home_Testing= menuNav.findItem(R.id.home_Testing);
+        final MenuItem Labtesting = menuNav.findItem(R.id.Lab_Testing);
+
+        MenuItem nav_logOut = menuNav.findItem(R.id.nav_logout);
+        MenuItem nav_logIn = menuNav.findItem(R.id.nav_login);
+        nav_profile.setVisible(false);
+        home_Testing.setVisible(false);
+       Labtesting.setVisible(false);
+        nav_logIn.setVisible(true);
+        nav_logOut.setVisible(false);
+
+
+        if(currentUser==null){
+            nav_logIn.setVisible(true);
+           Labtesting.setVisible(false);
+           home_Testing.setVisible(false);
+        }else {
+            nav_logOut.setVisible(true);
+           // checkType();
+            Labtesting.setVisible(true);
+            home_Testing.setVisible(true);
+
+        }
+
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
